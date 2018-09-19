@@ -4,11 +4,8 @@ const router = express.Router();
 const ContentfulController = require('../controllers/contentful.js');
 
 router.get("/homepage", ContentfulController.homepage);
-
-// router.post("/login", UserController.user_login);
-
-// router.post("/token", UserController.token);
-
-// router.delete("/:userId", checkAuth, UserController.user_delete);
+router.get("/pages", ContentfulController.pages);
+router.get("/page/:slug", ContentfulController.page);
+router.get("/navigation", ContentfulController.navigation);
 
 module.exports = router;
