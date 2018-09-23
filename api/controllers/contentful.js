@@ -2,13 +2,38 @@ const contentful = require('contentful');
 const client = contentful.createClient({
   space: process.env.SPACE_ID,
   environment: process.env.ENVIRONMENT_ID,
-  accessToken: process.env.ACCESS_TOKEN
+  accessToken: process.env.ACCESS_TOKEN,
+  resolveLinks: true
 });
 
 exports.homepage = (req, res, next) => {
-  client.getEntry('2IfAAvzwH6kScQGCwsUgic')
+  client.getEntries({
+    'sys.id[in]': '7tT62M3wjYWqGMqOyAEoC2',
+    'include': 2
+  })
     .then(entry => {
-      res.status(200).json(entry.fields);
+      console.log(entry.items[0].fields)
+      const item = entry.items[0]
+
+      res.status(200).json(
+        {
+          title: item.fields.title,
+          description: item.fields.description,
+          slug: item.fields.slug,
+          hero: {
+            title: item.fields.hero.fields.title,
+            subtitle: item.fields.hero.fields.subtitle,
+            button: {
+              title: item.fields.hero.fields.cta.fields.title,
+              path: item.fields.hero.fields.cta.fields.link,
+            },
+            image: {
+              title: item.fields.hero.fields.image.fields.title,
+              file: item.fields.hero.fields.image.fields.file.url
+            }
+          }
+        }
+      )
     })
     .catch(err => {
       res.status(500).send({ error: err });
