@@ -27,8 +27,6 @@ exports.homepage = (req, res, next) => {
           }
       })
 
-      console.log('content Blocks', contentBlocks)
-
       res.status(200).json(
         {
           title: item.fields.title,
@@ -39,14 +37,27 @@ exports.homepage = (req, res, next) => {
             subtitle: item.fields.hero.fields.subtitle,
             button: {
               title: item.fields.hero.fields.cta.fields.title,
-              path: item.fields.hero.fields.cta.fields.link,
+              path: item.fields.hero.fields.cta.fields.path,
             },
             image: {
               title: item.fields.hero.fields.image.fields.title,
               file: item.fields.hero.fields.image.fields.file.url
             }
           },
-          contentBlocks
+          contentBlocks,
+          banner: {
+            title: item.fields.banner.fields.title,
+            subtitle: item.fields.banner.fields.subtitle,
+            description: item.fields.banner.fields.description,
+            button: {
+              label: item.fields.banner.fields.button.fields.label,
+              path: item.fields.banner.fields.button.fields.path
+            },
+            image: {
+              title: item.fields.banner.fields.backgroundImage.fields.title,
+              file: item.fields.banner.fields.backgroundImage.fields.file.url
+            }
+          }
         }
       )
     })
@@ -75,7 +86,6 @@ exports.pages = (req, res, next) => {
 
 exports.page = (req, res, next) => {
   const slug = req.params.slug;
-  console.log('slug', slug)
 
   client.getEntries({
     'content_type': 'pages',
