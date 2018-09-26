@@ -12,8 +12,22 @@ exports.homepage = (req, res, next) => {
     'include': 2
   })
     .then(entry => {
-      console.log(entry.items[0].fields)
       const item = entry.items[0]
+
+      const contentBlocks = item.fields.contentBlocks.map(it => {
+          return {
+            title: it.fields.title,
+            subtitle: it.fields.subtitle,
+            description: it.fields.description,
+            slug: it.fields.slug,
+            image: {
+              title: it.fields.image.fields.title,
+              file: it.fields.image.fields.file.url
+            }
+          }
+      })
+
+      console.log('content Blocks', contentBlocks)
 
       res.status(200).json(
         {
@@ -31,7 +45,8 @@ exports.homepage = (req, res, next) => {
               title: item.fields.hero.fields.image.fields.title,
               file: item.fields.hero.fields.image.fields.file.url
             }
-          }
+          },
+          contentBlocks
         }
       )
     })
