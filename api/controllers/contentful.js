@@ -23,7 +23,11 @@ exports.homepage = (req, res, next) => {
             image: {
               title: it.fields.image.fields.title,
               file: it.fields.image.fields.file.url
-            }
+            },
+            // button: {
+            //   title: it.fields.button.fields.title,
+            //   path: it.fields.button.fields.file.path
+            // }
           }
       })
 
@@ -50,7 +54,7 @@ exports.homepage = (req, res, next) => {
             subtitle: item.fields.banner.fields.subtitle,
             description: item.fields.banner.fields.description,
             button: {
-              label: item.fields.banner.fields.button.fields.label,
+              title: item.fields.banner.fields.button.fields.title,
               path: item.fields.banner.fields.button.fields.path
             },
             image: {
