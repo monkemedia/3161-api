@@ -24,10 +24,10 @@ exports.homepage = (req, res, next) => {
               title: it.fields.image.fields.title,
               file: it.fields.image.fields.file.url
             },
-            // button: {
-            //   title: it.fields.button.fields.title,
-            //   path: it.fields.button.fields.file.path
-            // }
+            button: {
+              title: it.fields.button.fields.title,
+              path: it.fields.button.fields.path
+            }
           }
       })
 
