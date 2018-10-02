@@ -32,6 +32,18 @@ exports.homepage = (req, res, next) => {
           }
       })
 
+      const featuredItems = item.fields.featuredItems.map(it => {
+          return {
+            title: it.fields.title,
+            path: it.fields.path,
+            media: {
+              title: it.fields.image.fields.title,
+              file: it.fields.image.fields.file.url,
+              contentType: it.fields.image.fields.file.contentType
+            }
+          }
+      })
+
       res.status(200).json(
         {
           title: item.fields.title,
@@ -64,7 +76,8 @@ exports.homepage = (req, res, next) => {
               file: item.fields.banner.fields.backgroundImage.fields.file.url,
               contentType: item.fields.banner.fields.backgroundImage.fields.file.contentType
             }
-          }
+          },
+          featuredItems
         }
       )
     })
