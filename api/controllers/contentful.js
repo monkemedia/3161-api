@@ -45,7 +45,8 @@ exports.homepage = (req, res, next) => {
             },
             image: {
               title: item.fields.hero.fields.image.fields.title,
-              file: item.fields.hero.fields.image.fields.file.url
+              file: item.fields.hero.fields.image.fields.file.url,
+              contentType: item.fields.hero.fields.image.fields.file.contentType
             }
           },
           contentBlocks,
@@ -59,7 +60,8 @@ exports.homepage = (req, res, next) => {
             },
             image: {
               title: item.fields.banner.fields.backgroundImage.fields.title,
-              file: item.fields.banner.fields.backgroundImage.fields.file.url
+              file: item.fields.banner.fields.backgroundImage.fields.file.url,
+              contentType: item.fields.banner.fields.backgroundImage.fields.file.contentType
             }
           }
         }
