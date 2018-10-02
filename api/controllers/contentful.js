@@ -20,9 +20,10 @@ exports.homepage = (req, res, next) => {
             subtitle: it.fields.subtitle,
             description: it.fields.description,
             slug: it.fields.slug,
-            image: {
+            media: {
               title: it.fields.image.fields.title,
-              file: it.fields.image.fields.file.url
+              file: it.fields.image.fields.file.url,
+              contentType: it.fields.image.fields.file.contentType
             },
             button: {
               title: it.fields.button.fields.title,
@@ -43,7 +44,7 @@ exports.homepage = (req, res, next) => {
               title: item.fields.hero.fields.cta.fields.title,
               path: item.fields.hero.fields.cta.fields.path,
             },
-            image: {
+            media: {
               title: item.fields.hero.fields.image.fields.title,
               file: item.fields.hero.fields.image.fields.file.url,
               contentType: item.fields.hero.fields.image.fields.file.contentType
@@ -58,7 +59,7 @@ exports.homepage = (req, res, next) => {
               title: item.fields.banner.fields.button.fields.title,
               path: item.fields.banner.fields.button.fields.path
             },
-            image: {
+            media: {
               title: item.fields.banner.fields.backgroundImage.fields.title,
               file: item.fields.banner.fields.backgroundImage.fields.file.url,
               contentType: item.fields.banner.fields.backgroundImage.fields.file.contentType
