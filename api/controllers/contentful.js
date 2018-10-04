@@ -59,7 +59,12 @@ exports.homepage = (req, res, next) => {
             media: {
               title: item.fields.hero.fields.image.fields.title,
               file: item.fields.hero.fields.image.fields.file.url,
-              contentType: item.fields.hero.fields.image.fields.file.contentType
+              contentType: item.fields.hero.fields.image.fields.file.contentType,
+              mobile: {
+                title: item.fields.hero.fields.mobileImage.fields.title,
+                file: item.fields.hero.fields.mobileImage.fields.file.url,
+                contentType: item.fields.hero.fields.mobileImage.fields.file.contentType
+              }
             }
           },
           contentBlocks,
