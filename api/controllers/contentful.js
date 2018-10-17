@@ -117,7 +117,22 @@ exports.page = (req, res, next) => {
     'fields.slug': slug
   })
     .then(entry => {
-      res.status(200).json(entry.items[0].fields);
+      const item = entry.items[0]
+
+      res.status(200).json({
+        title: item.fields.title,
+        description: item.fields.description,
+        slug: item.fields.slug,
+        hero: {
+          title: item.fields.hero.fields.title,
+          subtitle: item.fields.hero.fields.subtitle,
+          media: {
+            title: item.fields.hero.fields.image.fields.title,
+            file: item.fields.hero.fields.image.fields.file.url,
+            contentType: item.fields.hero.fields.image.fields.file.contentType
+          }
+        }
+      });
     })
     .catch(err => {
       res.status(500).send({ error: err });
