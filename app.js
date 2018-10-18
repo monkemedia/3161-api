@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 
 const contentfulRoutes = require('./api/routes/contentful');
+const contactFormRoutes = require('./api/routes/contactForm');
 
 const cors = require('cors');
 
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
 
 // Routes which should handle requests
 app.use("/api/v1/contentful", contentfulRoutes);
+app.use("/api/v1/contact-us", contactFormRoutes);
 
 app.use((req, res, next) => {
   const error = new Error("Not found");
