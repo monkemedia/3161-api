@@ -192,3 +192,23 @@ exports.navigation = (req, res, next) => {
       res.status(500).send({ error: err });
     });
 };
+
+exports.meta = (req, res, next) => {
+  client.getEntries({
+    'content_type': 'meta'
+  })
+    .then(entry => {
+      const item = entry.items[0]
+
+      console.log(item);
+
+      res.status(200).json({
+          siteTitle: item.fields.siteTitle || null,
+          address: item.fields.address || null,
+          location: item.fields.location || null
+      });
+    })
+    .catch(err => {
+      res.status(500).send({ error: err });
+    });
+};
