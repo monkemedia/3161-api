@@ -16,70 +16,70 @@ exports.homepage = (req, res, next) => {
 
       const contentBlocks = item.fields.contentBlocks.map(it => {
           return {
-            title: it.fields.title,
-            subtitle: it.fields.subtitle,
-            description: it.fields.description,
-            slug: it.fields.slug,
+            title: it.fields.title || null,
+            subtitle: it.fields.subtitle || null,
+            description: it.fields.description || null,
+            slug: it.fields.slug || null,
             media: {
-              title: it.fields.image.fields.title,
-              file: it.fields.image.fields.file.url,
-              contentType: it.fields.image.fields.file.contentType
+              title: it.fields.image.fields.title || null,
+              file: it.fields.image.fields.file.url || null,
+              contentType: it.fields.image.fields.file.contentType || null
             },
             button: {
-              title: it.fields.button.fields.title,
-              path: it.fields.button.fields.path
+              title: it.fields.button.fields.title || null,
+              path: it.fields.button.fields.path || null
             }
           }
       })
 
       const featuredItems = item.fields.featuredItems.map(it => {
           return {
-            title: it.fields.title,
-            path: it.fields.path,
+            title: it.fields.title || null,
+            path: it.fields.path || null,
             media: {
-              title: it.fields.image.fields.title,
-              file: it.fields.image.fields.file.url,
-              contentType: it.fields.image.fields.file.contentType
+              title: it.fields.image.fields.title || null,
+              file: it.fields.image.fields.file.url || null,
+              contentType: it.fields.image.fields.file.contentType || null
             }
           }
       })
 
       res.status(200).json(
         {
-          title: item.fields.title,
-          description: item.fields.description,
-          slug: item.fields.slug,
+          title: item.fields.title || null,
+          description: item.fields.description || null,
+          slug: item.fields.slug || null,
           hero: {
-            title: item.fields.hero.fields.title,
-            subtitle: item.fields.hero.fields.subtitle,
+            title: item.fields.hero.fields.title || null,
+            subtitle: item.fields.hero.fields.subtitle || null,
             button: {
-              title: item.fields.hero.fields.cta.fields.title,
-              path: item.fields.hero.fields.cta.fields.path,
+              title: item.fields.hero.fields.cta.fields.title || null,
+              path: item.fields.hero.fields.cta.fields.path || null,
             },
             media: {
-              title: item.fields.hero.fields.image.fields.title,
-              file: item.fields.hero.fields.image.fields.file.url,
-              contentType: item.fields.hero.fields.image.fields.file.contentType,
+              title: item.fields.hero.fields.image.fields.title || null,
+              file: item.fields.hero.fields.image.fields.file.url || null,
+              contentType: item.fields.hero.fields.image.fields.file.contentType || null,
               mobile: {
-                title: item.fields.hero.fields.mobileImage.fields.title,
-                file: item.fields.hero.fields.mobileImage.fields.file.url,
-                contentType: item.fields.hero.fields.mobileImage.fields.file.contentType
+                title: item.fields.hero.fields.mobileImage.fields.title || null,
+                file: item.fields.hero.fields.mobileImage.fields.file.url || null,
+                contentType: item.fields.hero.fields.mobileImage.fields.file.contentType || null
               }
             }
           },
           contentBlocks,
           banner: {
-            title: item.fields.banner.fields.title,
-            subtitle: item.fields.banner.fields.subtitle,
-            description: item.fields.banner.fields.description,
+            title: item.fields.banner.fields.title || null,
+            subtitle: item.fields.banner.fields.subtitle || null,
+            description: item.fields.banner.fields.description || null,
             button: {
-              title: item.fields.banner.fields.button.fields.title,
-              path: item.fields.banner.fields.button.fields.path
+              title: item.fields.banner.fields.button.fields.title || null,
+              path: item.fields.banner.fields.button.fields.path || null
             },
             media: {
-              title: item.fields.banner.fields.backgroundImage.fields.title,
-              file: item.fields.banner.fields.backgroundImage.fields.file.url,
-              contentType: item.fields.banner.fields.backgroundImage.fields.file.contentType
+              title: item.fields.banner.fields.backgroundImage.fields.title || null,
+              file: item.fields.banner.fields.backgroundImage.fields.file.url || null,
+              contentType: item.fields.banner.fields.backgroundImage.fields.file.contentType || null
             }
           },
           featuredItems
@@ -132,6 +132,34 @@ exports.page = (req, res, next) => {
             contentType: item.fields.hero.fields.image.fields.file.contentType
           }
         }
+      });
+    })
+    .catch(err => {
+      res.status(500).send({ error: err });
+    });
+};
+
+exports.contact = (req, res, next) => {
+  client.getEntries({
+    'content_type': 'contact'
+  })
+    .then(entry => {
+      const item = entry.items[0]
+
+      console.log(item);
+
+      res.status(200).json({
+          title: item.fields.title || null,
+          description: item.fields.description || null,
+          hero: {
+            title: item.fields.hero.fields.title || null,
+            subtitle: item.fields.hero.fields.subtitle || null,
+            media: {
+              title: item.fields.hero.fields.image.fields.title || null,
+              file: item.fields.hero.fields.image.fields.file.url || null,
+              contentType: item.fields.hero.fields.image.fields.file.contentType || null
+            }
+          }
       });
     })
     .catch(err => {
