@@ -1,43 +1,49 @@
 const nodemailer = require('nodemailer');
+const postmarkTransport = require('nodemailer-postmark-transport');
+const transport = nodemailer.createTransport(postmarkTransport({
+  auth: {
+    apiKey: process.env.POSTMARK_TOKEN
+  }
+}));
 
 exports.send_form = (req, res, next) => {
-  nodemailer.createTestAccount((error, account) => {
+  const mail = {
+    from: process.env.EMAIL_ADDRESS,
+    to: process.env.EMAIL_ADDRESS,
+    templateId: 8788646,
+    templateModel: {
+      name: 'Ethan',
+      website_url: 'Lodge3161.com',
+      website_name: 'Lodge3161.com'
+    }
+  };
 
-    const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
-      auth: {
-        user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD
-      }
-    });
+  function sendToUs () {
+    const ourMail = {
+      from: process.env.EMAIL_ADDRESS,
+      to: process.env.EMAIL_ADDRESS,
+      subject: 'Contact form from Lodge3161.com',
+      html: '<h1>Hello, This email contains attachments</h1>',
+    };
 
-    // mailOpts = {
-      // from: req.body.name + ' &lt;' + req.body.email + '&gt;',
-      // to: process.env.EMAIL_USERNAME,
-      // subject: 'New message from contact form at tylerkrys.ca',
-      // text: `${req.body.name} (${req.body.email}) says: ${req.body.message}`
-    // };
-    const mailOptions = {
-          from: '"Fred Foo 👻" <foo@example.com>', // sender address
-          to: 'bar@example.com, baz@example.com', // list of receivers
-          subject: 'Hello ✔', // Subject line
-          text: 'Hello world?', // plain text body
-          html: '<b>Hello world?</b>' // html body
-      };
-
-    transporter.sendMail(mailOptions, function (err, info) {
+    transport.sendMail(ourMail, function (err, info) {
       if (err) {
-        console.log(err);
-        res.status(500).send({ error: 'contact failure' });
-      }
-      else {
-        // Preview only available when sending through an Ethereal account
-        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+        console.log("ERROR", err);
+        res.status(500).send(err);
+      } else {
         res.status(200).json({
           message: 'contact success'
-        })
+        });
       }
     });
+  }
+   
+  transport.sendMail(mail, function (err, info) {
+    if (err) {
+      console.log("ERROR", err);
+      res.status(500).send(err);
+    } else {
+      sendToUs();
+    }
   });
 };
