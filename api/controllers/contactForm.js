@@ -9,11 +9,11 @@ const transport = nodemailer.createTransport(postmarkTransport({
 exports.send_form = (req, res, next) => {
   const mail = {
     from: process.env.EMAIL_ADDRESS,
-    to: process.env.EMAIL_ADDRESS,
+    to: req.body.email,
     templateId: 8788646,
     templateModel: {
-      name: 'Ethan',
-      website_url: 'Lodge3161.com',
+      name: req.body.firstName,
+      website_url: 'http://www.lodge3161.com',
       website_name: 'Lodge3161.com'
     }
   };
@@ -22,13 +22,20 @@ exports.send_form = (req, res, next) => {
     const ourMail = {
       from: process.env.EMAIL_ADDRESS,
       to: process.env.EMAIL_ADDRESS,
-      subject: 'Contact form from Lodge3161.com',
-      html: '<h1>Hello, This email contains attachments</h1>',
+      templateId: 8799019,
+      templateModel: {
+        name: req.body.firstName + ' ' + req.body.lastName,
+        email: req.body.email,
+        phoneNumber: req.body.phoneNumber,
+        subject: req.body.reason,
+        message: req.body.message,
+        website_url: 'http://www.lodge3161.com',
+        website_name: 'Lodge3161.com'
+      }
     };
 
     transport.sendMail(ourMail, function (err, info) {
       if (err) {
-        console.log("ERROR", err);
         res.status(500).send(err);
       } else {
         res.status(200).json({
