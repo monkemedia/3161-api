@@ -174,11 +174,9 @@ exports.navigation = (req, res, next) => {
   })
     .then(entries => {
       const newArray = [];
-      console.log('entries', entries)
 
       entries.items.map(entry => {
         if (entry.fields) {
-          console.log('entry', entry.fields)
           newArray.push({
             label: entry.fields.title,
             slug: entry.fields.slug
