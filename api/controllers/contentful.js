@@ -82,7 +82,34 @@ exports.homepage = (req, res, next) => {
               contentType: item.fields.banner.fields.backgroundImage.fields.file.contentType || null
             }
           },
-          featuredItems
+          featuredItems,
+          pageMeta: {
+            title: item.fields.pageMeta.fields.title || null,
+            description: item.fields.pageMeta.fields.description || null
+          }
+        }
+      )
+    })
+    .catch(err => {
+      res.status(500).send({ error: err });
+    });
+};
+
+exports.location = (req, res, next) => {
+  client.getEntries({
+    'sys.id[in]': '4HQ5XgrC242EwIggikSiUE',
+    'include': 2
+  })
+    .then(entry => {
+      const item = entry.items[0]
+
+      res.status(200).json(
+        {
+          address: item.fields.address || null,
+          location: {
+            latitude: item.fields.location.lat || null,
+            longitude: item.fields.location.lon || null
+          }
         }
       )
     })
