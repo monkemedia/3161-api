@@ -59,12 +59,7 @@ exports.homepage = (req, res, next) => {
             media: {
               title: item.fields.hero.fields.image.fields.title || null,
               file: item.fields.hero.fields.image.fields.file.url || null,
-              contentType: item.fields.hero.fields.image.fields.file.contentType || null,
-              mobile: {
-                title: item.fields.hero.fields.mobileImage.fields.title || null,
-                file: item.fields.hero.fields.mobileImage.fields.file.url || null,
-                contentType: item.fields.hero.fields.mobileImage.fields.file.contentType || null
-              }
+              contentType: item.fields.hero.fields.image.fields.file.contentType || null
             }
           },
           contentBlocks,
@@ -107,8 +102,8 @@ exports.location = (req, res, next) => {
         {
           address: item.fields.address || null,
           location: {
-            latitude: item.fields.location.lat || null,
-            longitude: item.fields.location.lon || null
+            lat: item.fields.location.lat || null,
+            lon: item.fields.location.lon || null
           }
         }
       )
@@ -158,6 +153,10 @@ exports.page = (req, res, next) => {
             file: item.fields.hero.fields.image.fields.file.url,
             contentType: item.fields.hero.fields.image.fields.file.contentType
           }
+        },
+        pageMeta: {
+          title: item.fields.pageMeta.fields.title || null,
+          description: item.fields.pageMeta.fields.description || null
         }
       });
     })
@@ -200,36 +199,29 @@ exports.navigation = (req, res, next) => {
     'fields.mainNavigation': true
   })
     .then(entries => {
-      const newArray = [];
+      const promises = [];
 
       entries.items.map(entry => {
         if (entry.fields) {
-          newArray.push({
+          console.log('entry.fields', entry.fields);
+          promises.push({
             label: entry.fields.title,
-            slug: entry.fields.slug
+            slug: entry.fields.slug,
+            id: entry.sys.id,
+            order: entry.fields.order
           })
         }
       })
 
-      res.status(200).json(newArray);
-    })
-    .catch(err => {
-      res.status(500).send({ error: err });
-    });
-};
+      // Change order of navigation
+      promises.sort((a, b) => {
+        if (a.order > b.order) {
+          return 1
+        }
+        return -1
+      })
 
-exports.meta = (req, res, next) => {
-  client.getEntries({
-    'content_type': 'meta'
-  })
-    .then(entry => {
-      const item = entry.items[0]
-
-      res.status(200).json({
-          siteTitle: item.fields.siteTitle || null,
-          address: item.fields.address || null,
-          location: item.fields.location || null
-      });
+      res.status(200).json(promises);
     })
     .catch(err => {
       res.status(500).send({ error: err });
