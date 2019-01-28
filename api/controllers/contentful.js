@@ -14,24 +14,6 @@ exports.homepage = (req, res, next) => {
     .then(entry => {
       const item = entry.items[0]
 
-      const contentBlocks = item.fields.contentBlocks.map(it => {
-          return {
-            title: it.fields.title || null,
-            subtitle: it.fields.subtitle || null,
-            description: it.fields.description || null,
-            slug: it.fields.slug || null,
-            media: {
-              title: it.fields.image.fields.title || null,
-              file: it.fields.image.fields.file.url || null,
-              contentType: it.fields.image.fields.file.contentType || null
-            },
-            button: {
-              title: it.fields.button.fields.title || null,
-              path: it.fields.button.fields.path || null
-            }
-          }
-      })
-
       const featuredItems = item.fields.featuredItems.map(it => {
           return {
             title: it.fields.title || null,
@@ -62,7 +44,21 @@ exports.homepage = (req, res, next) => {
               contentType: item.fields.hero.fields.image.fields.file.contentType || null
             }
           },
-          contentBlocks,
+          contentBlock: {
+            title: item.fields.contentBlock.fields.title || null,
+            subtitle: item.fields.contentBlock.fields.subtitle || null,
+            description: item.fields.contentBlock.fields.description || null,
+            slug: item.fields.contentBlock.fields.slug || null,
+            media: {
+              title: item.fields.contentBlock.fields.image.fields.title || null,
+              file: item.fields.contentBlock.fields.image.fields.file.url || null,
+              contentType: item.fields.contentBlock.fields.image.fields.file.contentType || null
+            },
+            button: {
+              title: item.fields.contentBlock.fields.button.fields.title || null,
+              path: item.fields.contentBlock.fields.button.fields.path || null
+            }
+          },
           banner: {
             title: item.fields.banner.fields.title || null,
             subtitle: item.fields.banner.fields.subtitle || null,
