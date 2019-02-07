@@ -161,6 +161,26 @@ exports.page = (req, res, next) => {
     });
 };
 
+exports.news = (req, res, next) => {
+  client.getEntries({
+    'content_type': 'news'
+  })
+    .then(entries => {
+      const newArray = [];
+
+      entries.items.forEach(entry => {
+        if (entry.fields) {
+          newArray.push(entry.fields)
+        }
+      })
+
+      res.status(200).json(newArray);
+    })
+    .catch(err => {
+      res.status(500).send({ error: err });
+    });
+};
+
 exports.contact = (req, res, next) => {
   client.getEntries({
     'content_type': 'contact'
