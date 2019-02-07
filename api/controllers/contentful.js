@@ -139,6 +139,7 @@ exports.page = (req, res, next) => {
 
       res.status(200).json({
         title: item.fields.title,
+        blurb: item.fields.blurb,
         description: item.fields.description,
         slug: item.fields.slug,
         hero: {
@@ -170,7 +171,11 @@ exports.news = (req, res, next) => {
 
       entries.items.forEach(entry => {
         if (entry.fields) {
-          newArray.push(entry.fields)
+          const payload = {
+            id: entry.sys.id,
+            ...entry.fields
+          }
+          newArray.push(payload)
         }
       })
 
