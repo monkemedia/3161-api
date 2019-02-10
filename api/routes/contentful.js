@@ -1,14 +1,20 @@
-const express = require("express");
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 
-const ContentfulController = require('../controllers/contentful.js');
+const HomepageController = require('../controllers/contentful/homepage.js')
+const LocationController = require('../controllers/contentful/location.js')
+const PagesController = require('../controllers/contentful/pages.js')
+const PageController = require('../controllers/contentful/page.js')
+const NewsController = require('../controllers/contentful/news.js')
+const ContactController = require('../controllers/contentful/contact.js')
+const NavigationController = require('../controllers/contentful/navigation.js')
 
-router.get("/homepage", ContentfulController.homepage);
-router.get("/location", ContentfulController.location);
-router.get("/pages", ContentfulController.pages);
-router.get("/page/:slug", ContentfulController.page);
-router.get("/news", ContentfulController.news);
-router.get("/contact", ContentfulController.contact);
-router.get("/navigation", ContentfulController.navigation);
+router.get('/homepage', HomepageController.homepage)
+router.get('/location', LocationController.location)
+router.get('/pages', PagesController.pages)
+router.get('/page/:slug', PageController.page)
+router.get('/news', NewsController.news)
+router.get('/contact', ContactController.contact)
+router.get('/navigation', NavigationController.navigation)
 
-module.exports = router;
+module.exports = router
