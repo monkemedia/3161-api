@@ -1,10 +1,13 @@
-exports.news = (req, res, next) => {
-  const appRoot = require('app-root-path')
-  const client = require(appRoot + '/api/utils/initClient.js')
+const appRoot = require('app-root-path')
+const client = require(appRoot + '/api/utils/initClient.js')
 
-  client.initClient()
+exports.news = (req, res, next) => {
+  const limit = req.query.limit ? req.query.limit : 100
+
+   client.initClient()
     .getEntries({
-      'content_type': 'news'
+      'content_type': 'news',
+      'limit': limit
     })
       .then(entries => {
         const newArray = [];
