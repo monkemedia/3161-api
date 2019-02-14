@@ -13,7 +13,12 @@ exports.details = (req, res, next) => {
 
         res.status(200).json({
           name: item.fields.name,
-          about: item.fields.about
+          about: item.fields.about,
+          image: {
+            title: item.fields.image.fields.title || null,
+            file: item.fields.image.fields.file.url || null,
+            contentType: item.fields.image.fields.file.contentType || null
+          }
         });
       })
       .catch(err => {
