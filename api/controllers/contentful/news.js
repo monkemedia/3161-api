@@ -1,5 +1,10 @@
 const appRoot = require('app-root-path')
 const client = require(appRoot + '/api/utils/initClient.js')
+const axios = require('axios')
+const restDb = process.env.REST_DB_URL
+const restDbHeaders = {
+  'x-apikey': process.env.REST_DB_API
+}
 
 exports.news = (req, res, next) => {
   const limit = req.query.limit
@@ -14,7 +19,8 @@ exports.news = (req, res, next) => {
       'query': search || null
     })
       .then(entries => {
-        const newArray = [];
+        const newArray = []
+        const promises = []
 
         entries.items.forEach(entry => {
           if (entry.fields) {
@@ -25,9 +31,35 @@ exports.news = (req, res, next) => {
             newArray.push(payload)
           }
         })
+          
+        newArray.map(entry => {
+          const postId = entry.id
+          let query = {
+            'postId': postId
+          }
+          query = JSON.stringify(query)
 
-        res.status(200).json(newArray);
+          promises.push(
+            axios.get(`${restDb}/rest/likes?q=${query}`, {
+              headers: restDbHeaders
+            })
+              .then(resp => {
+                return {
+                  ...entry,
+                  likes: {
+                    ...resp.data[0]
+                  }
+                }
+              }))
+        })
+
+        return Promise.all(promises)
       })
+      .then(response => {
+        res.status(200).json(response);
+      })
+        // 
+        // res.status(200).json(newArray);
       .catch(err => {
         res.status(500).send({ error: err });
       });
