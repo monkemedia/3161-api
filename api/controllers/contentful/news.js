@@ -19,7 +19,7 @@ exports.news = (req, res, next) => {
       'query': search || null
     })
       .then(entries => {
-        const newArray = []
+        const items = []
         const promises = []
 
         entries.items.forEach(entry => {
@@ -28,11 +28,11 @@ exports.news = (req, res, next) => {
               id: entry.sys.id,
               ...entry.fields
             }
-            newArray.push(payload)
+            items.push(payload)
           }
         })
           
-        newArray.map(entry => {
+        items.map(entry => {
           const postId = entry.id
           let query = {
             'postId': postId
@@ -54,9 +54,15 @@ exports.news = (req, res, next) => {
         })
 
         return Promise.all(promises)
-      })
-      .then(response => {
-        res.status(200).json(response);
+          .then(response => {
+            const payload = {
+              total: entries.total,
+              skip: entries.skip,
+              limit: entries.limit,
+              items: response
+            }
+            res.status(200).json(payload);
+          })
       })
         // 
         // res.status(200).json(newArray);
